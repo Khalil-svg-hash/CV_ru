@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Khalil Sharaf — Product & Project Manager</title>
+  <script>
+    (function(){
+      const lang = localStorage.getItem('lang') || 'en';
+      document.documentElement.setAttribute('data-active-lang', lang);
+    })();
+  </script>
+
+  <!-- Favicon -->
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+
+  <link rel="preload" as="image" href="portrait.webp" type="image/webp" fetchpriority="high" />
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+
+    :root {
+      --bg: #080808;
+      --surface: rgba(255,255,255,0.04);
+      --border: rgba(255,255,255,0.08);
+      --text: #f0ede8;
+      --muted: rgba(240,237,232,0.45);
+      --accent: #c9a96e;
+      --accent2: #7eb8c9;
+      --radius: 16px;
+    }
+    /* Language visibility — hide all by default, show active lang only */
+    [data-lang] { display: none; }
+    [data-active-lang="en"] [data-lang="en"] { display: revert; }
+    [data-active-lang="ru"] [data-lang="ru"] { display: revert; }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── SHADER CANVAS ── */
+    #shader-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      opacity: 0.35;
+      pointer-events: none;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      backdrop-filter: blur(20px);
+      background: rgba(8,8,8,0.6);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      align-items: center;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-links a.active { color: var(--accent); }
+
+    /* ── LANG TOGGLE ── */
+    .lang-toggle {
+      display: flex;
+      gap: 6px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 4px 6px;
+    }
+    .lang-btn {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      padding: 4px 10px;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: 'Inter', sans-serif;
+    }
+    .lang-btn.active {
+      background: var(--accent);
+      color: #080808;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 120px 40px 80px;
+    }
+    .hero-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 60px;
+      align-items: center;
+    }
+    .hero-label {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .hero-label::before {
+      content: '';
+      display: block;
+      width: 32px;
+      height: 1px;
+      background: var(--accent);
+    }
+    .hero-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(52px, 8vw, 96px);
+      font-weight: 300;
+      line-height: 0.95;
+      letter-spacing: -0.01em;
+      margin-bottom: 24px;
+    }
+    .hero-name em {
+      font-style: italic;
+      color: var(--accent);
+    }
+    .hero-role {
+      font-size: 15px;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      margin-bottom: 40px;
+      font-weight: 300;
+    }
+    .hero-bio {
+      font-size: 15px;
+      color: rgba(240,237,232,0.7);
+      line-height: 1.75;
+      max-width: 520px;
+      margin-bottom: 48px;
+    }
+    .hero-cta {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      color: #080808;
+      padding: 14px 28px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+      transition: all 0.25s;
+    }
+    .btn-primary:hover {
+      background: #d4b47e;
+      transform: translateY(-1px);
+    }
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 14px 28px;
+      border-radius: 100px;
+      font-size: 13px;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+      transition: all 0.25s;
+    }
+    .btn-secondary:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* ── PORTRAIT CARD ── */
+    .portrait-wrap {
+      position: relative;
+    }
+    .portrait-card {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      aspect-ratio: 3/4;
+      background: #111;
+      box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+      transition: transform 0.4s ease;
+    }
+    .portrait-card:hover {
+      transform: translateY(-6px);
+    }
+    .portrait-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(15%);
+      transition: filter 0.4s;
+    }
+    .portrait-card:hover img { filter: grayscale(0%); }
+    .portrait-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(8,8,8,0.7) 0%, transparent 50%);
+    }
+    .portrait-badge {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      background: rgba(8,8,8,0.8);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+      border-radius: 12px;
+      padding: 14px 18px;
+    }
+    .portrait-badge-title {
+      font-size: 11px;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .portrait-badge-text {
+      font-size: 13px;
+      color: var(--text);
+      font-weight: 300;
+    }
+
+    /* ── SECTION ── */
+    section {
+      position: relative;
+      z-index: 1;
+      padding: 80px 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .section-header {
+      margin-bottom: 48px;
+    }
+    .section-tag {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(32px, 4vw, 48px);
+      font-weight: 300;
+      line-height: 1.1;
+    }
+
+    /* ── FROSTED CARDS GRID ── */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    .frosted-card {
+      position: relative;
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(20px);
+      padding: 28px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+      cursor: default;
+      will-change: transform;
+    }
+    .frosted-card:hover {
+      border-color: rgba(201,169,110,0.3);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    }
+    .card-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: rgba(201,169,110,0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 18px;
+      font-size: 18px;
+    }
+    .card-label {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 400;
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+    .card-sub {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+    .card-body {
+      font-size: 13px;
+      color: rgba(240,237,232,0.65);
+      line-height: 1.7;
+    }
+    .card-body ul { padding-left: 16px; }
+    .card-body li { margin-bottom: 4px; }
+
+    /* ── SKILLS SECTION ── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+    .skill-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      transition: border-color 0.2s;
+    }
+    .skill-block:hover { border-color: rgba(126,184,201,0.3); }
+    .skill-block-title {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin-bottom: 14px;
+    }
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+    .tag {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 100px;
+      padding: 5px 12px;
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.03em;
+      transition: all 0.15s;
+    }
+    .tag:hover {
+      background: rgba(201,169,110,0.1);
+      border-color: rgba(201,169,110,0.3);
+      color: var(--accent);
+    }
+
+    /* ── LANGS ── */
+    .langs-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 24px;
+    }
+    .lang-pill {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 10px 20px;
+    }
+    .lang-flag { font-size: 20px; }
+    .lang-name { font-size: 13px; font-weight: 500; }
+    .lang-level { font-size: 11px; color: var(--muted); }
+
+    /* ── CONTACT ── */
+    .contact-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 32px;
+    }
+    .contact-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 22px;
+      text-decoration: none;
+      color: var(--muted);
+      transition: all 0.2s;
+      font-size: 13px;
+    }
+    .contact-card:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .contact-icon { font-size: 18px; }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 40px;
+      color: var(--muted);
+      font-size: 12px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--border), transparent);
+      margin: 0 40px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── STAT ROW ── */
+    .stats-row {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+      margin-top: 48px;
+    }
+    .stat-item {}
+    .stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 48px;
+      font-weight: 300;
+      color: var(--accent);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    /* ── MOBILE ── */
+    @media (max-width: 768px) {
+      nav { padding: 16px 20px; }
+      .nav-links { display: none; }
+      .hero { padding: 100px 20px 60px; }
+      .hero-inner {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+      .portrait-wrap { order: -1; max-width: 280px; margin: 0 auto; }
+      section { padding: 60px 20px; }
+      .stats-row { gap: 24px; }
+      .stat-num { font-size: 36px; }
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .hero-label { animation: fadeUp 0.6s ease both; }
+    .hero-name { animation: fadeUp 0.6s 0.1s ease both; }
+    .hero-role { animation: fadeUp 0.6s 0.2s ease both; }
+    .hero-bio { animation: fadeUp 0.6s 0.3s ease both; }
+    .hero-cta { animation: fadeUp 0.6s 0.4s ease both; }
+    .portrait-card { animation: fadeUp 0.8s 0.2s ease both; }
+
+
+    /* ── CARD LOGO (svg/img) ── */
+    .card-icon-img {
+      width: 100%;
+      height: 44px;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+    }
+    .card-icon-img img {
+      max-height: 32px;
+      max-width: 130px;
+      width: auto;
+      object-fit: contain;
+      opacity: 0.85;
+      transition: opacity 0.25s;
+    }
+    .frosted-card:hover .card-icon-img img { opacity: 1; }
+
+    /* Contact icon images */
+    .contact-icon-img {
+      width: 22px;
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .contact-icon-img img {
+      width: 20px;
+      height: 20px;
+      object-fit: contain;
+      opacity: 0.8;
+      transition: opacity 0.2s;
+    }
+    .contact-card:hover .contact-icon-img img { opacity: 1; }
+
+    /* Flag emoji keep as-is (no SVG provided) */
+
+    .lang-flag-txt {
+      display: inline-block;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      background: rgba(255,255,255,0.07);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 2px 5px;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+<body>
+
+<!-- SHADER CANVAS -->
+<canvas id="shader-canvas"></canvas>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">K · S</a>
+  <ul class="nav-links">
+    <li><a href="index.html" class="active" data-en="Home" data-ru="Главная">Home</a></li>
+    <li><a href="portfolio.html" data-en="Portfolio" data-ru="Портфолио">Portfolio</a></li>
+    <li><a href="#contact" data-en="Contact" data-ru="Контакт">Contact</a></li>
+  </ul>
+  <div class="lang-toggle">
+    <button class="lang-btn active" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" onclick="setLang('ru')">RU</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-label">
+        <span data-lang="en">Product & Project Manager</span>
+        <span data-lang="ru">Продакт и проджект-менеджер</span>
+      </div>
+      <h1 class="hero-name">
+        <span data-lang="en">Khalil</span><span data-lang="ru">Халиль</span><br />
+        <em><span data-lang="en">Sharaf</span><span data-lang="ru">Шараф</span></em>
+      </h1>
+      <p class="hero-role">
+        <span data-lang="en">Yandex · MIPT · Moscow</span>
+        <span data-lang="ru">Яндекс · МФТИ · Москва</span>
+      </p>
+      <p class="hero-bio">
+        <span data-lang="en">Content manager and localizer with 3+ years  at the intersection of tech, media products, and international markets. Participated in launching and scaling the Yango Play streaming service in MENA. Currently pursuing an MSc in IT Product Management at MIPT.</span>
+        <span data-lang="ru">Контент-менеджер и локализатор с опытом более трёх лет на стыке технологий, медиапродуктов и международных рынков. Участвовал в запуске и масштабировании Yango Play в регионе MENA. Сейчас прохожу магистратуру в МФТИ по направлению «Управление IT-продуктами».</span>
+      </p>
+      <div class="hero-cta">
+        <a href="portfolio.html" class="btn-primary">
+          <span data-lang="en">View Portfolio</span>
+          <span data-lang="ru">Портфолио</span>
+          →
+        </a>
+
+        <!-- Dropdown container -->
+        <div class="dropdown-container">
+          <button class="dropdown-toggle btn-secondary" id="contactDropdownToggle">
+            <span data-lang="en">Get in Touch</span>
+            <span data-lang="ru">Написать мне</span>
+            <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+          <div class="dropdown-menu" id="contactDropdownMenu">
+            <a href="https://t.me/Simplykhalil" target="_blank" class="dropdown-item">
+              <span class="contact-icon-img"><img src="Telegram.svg" alt="Telegram" /></span>
+              <span>@Simplykhalil</span>
+            </a>
+            <a href="/cdn-cgi/l/email-protection#d2b9bab3bebbbeb4bda0a5bda0b992b5bfb3bbbefcb1bdbf" class="dropdown-item">
+              <span class="contact-icon-img"><img src="gmail.svg" alt="Email" /></span>
+              <span>Gmail</span>
+            </a>
+            <a href="/cdn-cgi/l/email-protection#dfacb6b2afb3a6b4b7beb3b6b39fa6beb1bbbaa7f1adaa" class="dropdown-item">
+              <span class="contact-icon-img"><img src="Yandex_mail.svg" alt="Yandex Mail" /></span>
+              <span>Yandex Mail</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="stats-row">
+        <div class="stat-item">
+          <div class="stat-num">3+</div>
+          <div class="stat-label" data-lang="en">Years Experience</div>
+          <div class="stat-label" data-lang="ru">Года опыта</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">4</div>
+          <div class="stat-label" data-lang="en">Languages</div>
+          <div class="stat-label" data-lang="ru">Языка</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">2</div>
+          <div class="stat-label" data-lang="en">Degrees</div>
+          <div class="stat-label" data-lang="ru">Диплома</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="portrait-wrap">
+      <div class="portrait-card" id="portrait3d">
+        <picture>
+          <source srcset="portrait.webp" type="image/webp">
+          <img src="portrait.jpg" alt="Khalil Sharaf" fetchpriority="high" />
+        </picture>
+        <div class="portrait-overlay"></div>
+        <div class="portrait-badge">
+          <div class="portrait-badge-title" data-lang="en">Available for hire</div>
+          <div class="portrait-badge-title" data-lang="ru">Рассматриваю предложения</div>
+          <div class="portrait-badge-text">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Add these styles to your existing CSS (in the <style> block) -->
+<style>
+  /* Dropdown styles */
+  .dropdown-container {
+    position: relative;
+    display: inline-block;
+  }
+
+  .dropdown-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 14px 28px;
+    border-radius: 100px;
+    font-size: 13px;
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    transition: all 0.25s;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .dropdown-toggle:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .chevron-icon {
+    transition: transform 0.4s ease;
+  }
+
+  .dropdown-container.open .chevron-icon {
+    transform: rotate(180deg);
+  }
+
+  .dropdown-menu {
+    position: absolute;
+    z-index: 10;
+    min-width: 200px;
+    margin-top: 8px;
+    padding: 6px;
+    background: rgba(17,17,17,0.6);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    opacity: 0;
+    transform: translateY(-5px) scale(0.95);
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  .dropdown-container.open .dropdown-menu {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+  }
+
+  .dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    border-radius: 12px;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 13px;
+    transition: background-color 0.2s, color 0.2s;
+  }
+
+  .dropdown-item:hover {
+    background-color: rgba(255,255,255,0.08);
+    color: var(--text);
+  }
+
+  .dropdown-item .contact-icon-img {
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .dropdown-item .contact-icon-img img {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+    opacity: 0.8;
+  }
+
+  .dropdown-item:hover .contact-icon-img img {
+    opacity: 1;
+  }
+
+  /* Adjust for mobile */
+  @media (max-width: 768px) {
+    .dropdown-menu {
+      left: 0;
+      right: auto;
+    }
+  }
+</style>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  // Dropdown functionality
+  (function() {
+    const dropdownContainer = document.querySelector('.dropdown-container');
+    const dropdownToggle = document.getElementById('contactDropdownToggle');
+    const dropdownMenu = document.getElementById('contactDropdownMenu');
+
+    if (dropdownToggle && dropdownMenu) {
+      dropdownToggle.addEventListener('click', function(e) {
+        e.stopPropagation();
+        dropdownContainer.classList.toggle('open');
+      });
+
+      // Close when clicking outside
+      document.addEventListener('click', function(e) {
+        if (!dropdownContainer.contains(e.target)) {
+          dropdownContainer.classList.remove('open');
+        }
+      });
+
+      // Close when clicking an option
+      dropdownMenu.querySelectorAll('.dropdown-item').forEach(item => {
+        item.addEventListener('click', function() {
+          dropdownContainer.classList.remove('open');
+        });
+      });
+    }
+  })();
+</script>
+
+<!-- EXPERIENCE -->
+<section>
+  <div class="section-header">
+    <div class="section-tag" data-lang="en">Work Experience</div>
+    <div class="section-tag" data-lang="ru">Опыт работы</div>
+    <h2 class="section-title">
+      <span data-lang="en">Where I've Made An Impact</span>
+      <span data-lang="ru">Мой профессиональный путь</span>
+    </h2>
+  </div>
+  <div class="cards-grid">
+
+
+    <div class="frosted-card">
+      <div class="card-icon-img"><img src="Yandex.svg" alt="Yandex / KinoPoisk" style="filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.6));" /></div>
+      <div class="card-label">Oct 2023 — Present</div>
+      <div class="card-title">KinoPoisk / Yandex</div>
+      <div class="card-sub" data-lang="en">Content Manager & Subtitle editor</div>
+      <div class="card-sub" data-lang="ru">Контент-менеджер & Редактор субтитров</div>
+      <div class="card-body">
+        <ul data-lang="en">
+          <li>Participated in launching Yango Play in MENA region</li>
+          <li>Cross-regional coordination between Middle Eastern studios and global content partners</li>
+          <li>Localization for KinoPoisk, Yango Play, Sony, Crunchyroll, Starz Play</li>
+          <li>Implemented AI tools in editorial processes — reduced processing time</li>
+          <li>Participated in product tasks: requirements, metrics, prioritization</li>
+        </ul>
+        <ul data-lang="ru">
+          <li>Участвовал в запуске Yango Play на рынках MENA</li>
+          <li>Межрегиональная координация со студиями Ближнего Востока и международными партнёрами</li>
+          <li>Локализация для КиноПоиска, Yango Play, Sony, Crunchyroll, Starz Play</li>
+          <li>Внедрил AI-инструменты в редакционные процессы — сократил время обработки контента</li>
+          <li>Участвовал в продуктовых задачах: проработка требований, метрики, приоритизация</li>
+        </ul>
+      </div>
+    </div>
+
+
+    <div class="frosted-card">
+      <div class="card-icon-img"><img src="Merlin.svg" alt="Merlin"/></div>
+      <div class="card-label">Jan 2025 — Jul 2025 · Part-time</div>
+      <div class="card-title">Merlin</div>
+      <div class="card-sub" data-lang="en">Product Manager</div>
+      <div class="card-sub" data-lang="ru">Менеджер продукта</div>
+      <div class="card-body">
+        <ul data-lang="en">
+          <li>Developed AI VoiceOver technology for film & video production</li>
+          <li>Improved product processes and user experience</li>
+          <li>Rest is NDA</li>
+        </ul>
+        <ul data-lang="ru">
+          <li>Развивал AI-технологию VoiceOver для кино- и видеопроизводства</li>
+          <li>Выстраивал продуктовые процессы и улучшал пользовательский опыт</li>
+          <li>Остальное под NDA</li>
+        </ul>
+      </div>
+    </div>
+
+
+    <div class="frosted-card">
+      <div class="card-icon-img"><img src="rufilms.svg" alt="RuFilms"/></div>
+      <div class="card-label">Oct 2019 — Sep 2022 · Part-time</div>
+      <div class="card-title">RuFilms LLC</div>
+      <div class="card-sub" data-lang="en">Translator / Localizer</div>
+      <div class="card-sub" data-lang="ru">Переводчик / Локализатор</div>
+      <div class="card-body">
+        <ul data-lang="en">
+          <li>Managed content localization for MENA region</li>
+          <li>Translated complex medical lectures for Qatar University</li>
+          <li>Combined work with Bachelor's in Linguistics at SPbPU</li>
+        </ul>
+        <ul data-lang="ru">
+          <li>Вёл локализацию медиаконтента для стран MENA</li>
+          <li>Переводил сложные медицинские лекции для Университета Катара</li>
+          <li>Совмещал с очным обучением на бакалавриате по лингвистике в СПбПУ</li>
+        </ul>
+      </div>
+    </div>
+
+
+  </div>
+</section>
+
+
+<div class="divider"></div>
+
+
+<!-- EDUCATION -->
+<section>
+  <div class="section-header">
+    <div class="section-tag" data-lang="en">Education</div>
+    <div class="section-tag" data-lang="ru">Образование</div>
+    <h2 class="section-title">
+      <span data-lang="en">Academic Background</span>
+      <span data-lang="ru">Образование и специализация</span>
+    </h2>
+  </div>
+  <div class="cards-grid">
+    <div class="frosted-card">
+      <div class="card-icon-img"><img src="mipt.svg" alt="MIPT" style="transform: scale(1.3);" /></div>
+      <div class="card-label">2025 — 2027</div>
+      <div class="card-title">
+        <span data-lang="en">MIPT</span>
+        <span data-lang="ru">МФТИ</span>
+      </div>
+      <div class="card-sub" data-lang="en">Moscow Institute of Physics and Technology</div>
+      <div class="card-sub" data-lang="ru">Московский физико-технический институт</div>
+      <div class="card-body">
+        <span data-lang="en">Master's · Business Informatics · IT Product Management</span>
+        <span data-lang="ru">Магистратура · Бизнес-информатика · Управление IT-продуктами</span>
+      </div>
+    </div>
+    <div class="frosted-card">
+      <div class="card-icon-img"><img src="spbpu.svg" alt="SPbPU" /></div>
+      <div class="card-label">2019 — 2023</div>
+      <div class="card-title">
+        <span data-lang="en">SPbPU</span>
+        <span data-lang="ru">СПбПУ</span>
+      </div>
+      <div class="card-sub" data-lang="en">Peter the Great St. Petersburg Polytechnic University</div>
+      <div class="card-sub" data-lang="ru">Санкт-Петербургский политехнический университет</div>
+      <div class="card-body">
+        <span data-lang="en">Bachelor's · Humanities Faculty · Linguistics</span>
+        <span data-lang="ru">Бакалавриат · Гуманитарный институт · Лингвистика</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SKILLS -->
+<section>
+  <div class="section-header">
+    <div class="section-tag" data-lang="en">Skills & Tools</div>
+    <div class="section-tag" data-lang="ru">Навыки и инструменты</div>
+    <h2 class="section-title">
+      <span data-lang="en">What I Bring to the Table</span>
+      <span data-lang="ru">Чем я могу быть полезен</span>
+    </h2>
+  </div>
+  <div class="skills-grid">
+    <div class="skill-block">
+      <div class="skill-block-title" data-lang="en">Product</div>
+      <div class="skill-block-title" data-lang="ru">Продукт</div>
+      <div class="skill-tags">
+        <span class="tag">Product Management</span>
+        <span class="tag">Roadmapping</span>
+        <span class="tag">Product Discovery</span>
+        <span class="tag">Competitor Analysis</span>
+        <span class="tag">KPIs</span>
+        <span class="tag">CustDev</span>
+        <span class="tag">A/B Testing</span>
+        <span class="tag">Unit Economics</span>
+        <span class="tag">MVP</span>
+        <span class="tag">User Story</span>
+        <span class="tag">SWOT</span>
+      </div>
+    </div>
+    <div class="skill-block">
+      <div class="skill-block-title" data-lang="en">Methodology</div>
+      <div class="skill-block-title" data-lang="ru">Методологии</div>
+      <div class="skill-tags">
+        <span class="tag">Scrum</span>
+        <span class="tag">Agile</span>
+        <span class="tag">Lean Startup</span>
+        <span class="tag">Design Thinking</span>
+        <span class="tag">Project Management</span>
+        <span class="tag">Business Analysis</span>
+        <span class="tag">UX/UI Fundamentals</span>
+        <span class="tag">User Journey Mapping</span>
+      </div>
+    </div>
+    <div class="skill-block">
+      <div class="skill-block-title" data-lang="en">Tools</div>
+      <div class="skill-block-title" data-lang="ru">Инструменты</div>
+      <div class="skill-tags">
+        <span class="tag">Figma</span>
+        <span class="tag">Notion</span>
+        <span class="tag">Miro</span>
+        <span class="tag">Jira</span>
+        <span class="tag">Yandex Tracker</span>
+        <span class="tag">Excel</span>
+        <span class="tag">SQL</span>
+        <span class="tag">Basic Python</span>
+        <span class="tag">ChatGPT / Claude API</span>
+        <span class="tag">Vibe Coding</span>
+        <span class="tag">Basic Web Dev</span>
+        <span class="tag">Basic ML</span>
+        <span class="tag">AI Automation</span>
+        <span class="tag">Data Science</span>
+      </div>
+    </div>
+    <div class="skill-block">
+      <div class="skill-block-title" data-lang="en">Soft Skills</div>
+      <div class="skill-block-title" data-lang="ru">Гибкие навыки</div>
+      <div class="skill-tags">
+        <span class="tag" data-lang="en">Negotiations</span>
+        <span class="tag" data-lang="ru">Переговоры</span>
+        <span class="tag" data-lang="en">Team Leadership</span>
+        <span class="tag" data-lang="ru">Лидерство</span>
+        <span class="tag" data-lang="en">Public Speaking</span>
+        <span class="tag" data-lang="ru">Публичные выступления</span>
+        <span class="tag" data-lang="en">Multilingual Communication</span>
+        <span class="tag" data-lang="ru">Межъязыковая коммуникация</span>
+        <span class="tag" data-lang="en">Cross-cultural Communication</span>
+        <span class="tag" data-lang="ru">Межкультурная коммуникация</span>
+        <span class="tag" data-lang="en">Data-Driven Decisions</span>
+        <span class="tag" data-lang="ru">Решения на основе данных</span>
+        <span class="tag" data-lang="en">Cross-functional</span>
+        <span class="tag" data-lang="ru">Кросс-функциональность</span>
+        <span class="tag" data-lang="en">Behavioural Economics</span>
+        <span class="tag" data-lang="ru">Поведенческая экономика</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Languages -->
+  <div style="margin-top: 48px;">
+    <div class="section-tag" data-lang="en">Languages</div>
+    <div class="section-tag" data-lang="ru">Языки</div>
+<div class="langs-row">
+  <div class="lang-pill">
+    <img src="Saudi_Arabia.svg" alt="AR" style="width: 28px !important; height: 28px !important; border-radius: 50%; object-fit: cover; flex-shrink: 0;">
+    <div>
+      <div class="lang-name" data-lang="en">Arabic</div>
+      <div class="lang-name" data-lang="ru">Арабский</div>
+      <div class="lang-level" data-lang="en">Native</div>
+      <div class="lang-level" data-lang="ru">Родной</div>
+    </div>
+  </div>
+  
+  <div class="lang-pill">
+    <img src="uk.svg" alt="EN" style="width: 28px !important; height: 28px !important; border-radius: 50%; object-fit: cover; flex-shrink: 0;">
+    <div>
+      <div class="lang-name">English</div>
+      <div class="lang-level">C2</div>
+    </div>
+  </div>
+  
+  <div class="lang-pill">
+    <img src="Russia.svg" alt="RU" style="width: 28px !important; height: 28px !important; border-radius: 50%; object-fit: cover; flex-shrink: 0;">
+    <div>
+      <div class="lang-name" data-lang="en">Russian</div>
+      <div class="lang-name" data-lang="ru">Русский</div>
+      <div class="lang-level">C1/C2</div>
+    </div>
+  </div>
+  
+  <div class="lang-pill">
+    <img src="china.svg" alt="ZH" style="width: 28px !important; height: 28px !important; border-radius: 50%; object-fit: cover; flex-shrink: 0;">
+    <div>
+      <div class="lang-name" data-lang="en">Chinese</div>
+      <div class="lang-name" data-lang="ru">Китайский</div>
+      <div class="lang-level">A1</div>
+    </div>
+  </div>
+</div>
+
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CONTACT -->
+<section id="contact">
+
+  <div class="section-header">
+    <div class="section-tag" data-lang="en">Contact</div>
+    <div class="section-tag" data-lang="ru">Контакты</div>
+    <h2 class="section-title">
+      <span data-lang="en">Let's Work Together</span>
+      <span data-lang="ru">Свяжитесь со мной</span>
+    </h2>
+  </div>
+  <div class="contact-row">
+  
+<a href="/cdn-cgi/l/email-protection#88e3e0e9e4e1e4eee7faffe7fae3c8efe5e9e1e4a6ebe7e5" class="contact-card">
+  <span class="contact-icon-img"><img src="gmail.svg" alt="Email" /></span>
+  <span>Gmail</span>
+</a>
+
+<a href="/cdn-cgi/l/email-protection#35465c5845594c5e5d54595c59754c545b51504d1b4740" class="contact-card">
+  <span class="contact-icon-img"><img src="Yandex_mail.svg" alt="Yandex Mail" /></span>
+  <span>Yandex Mail</span>
+</a>
+
+    <a href="https://t.me/Simplykhalil" target="_blank" class="contact-card">
+      <span class="contact-icon-img"><img src="Telegram.svg" alt="Telegram" /></span>
+      <span>@Simplykhalil</span>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <span data-lang="en">© 2026 Khalil Sharaf · Moscow, Russia · Open to relocation & travel</span>
+  <span data-lang="ru">© 2026 Халиль Шараф · Москва · Готов к релокации и командировкам</span>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ──────────────────────────────────────
+// SHADER (WebGL) — adapted from 21dev
+// ──────────────────────────────────────
+(function(){
+  const canvas = document.getElementById('shader-canvas');
+  const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+  if (!gl) return;
+
+  const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+
+  function resize(){
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    gl.viewport(0,0,canvas.width,canvas.height);
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const vsrc = `
+    attribute vec2 a_pos;
+    void main(){ gl_Position = vec4(a_pos,0,1); }
+  `;
+  const fsrc = `
+    precision highp float;
+    uniform vec2 u_res;
+    uniform float u_time;
+    float random(in float x){ return fract(sin(x)*1e4); }
+    float random(in vec2 st){ return fract(sin(dot(st.xy,vec2(12.9898,78.233)))*43758.5453123); }
+    void main(){
+      vec2 uv = (gl_FragCoord.xy*2.0 - u_res.xy)/min(u_res.x,u_res.y);
+      vec2 fMosaicScal = vec2(4.0,2.0);
+      vec2 vScreenSize = vec2(${isMobile ? '128.0,128.0' : '256.0,256.0'});
+      uv.x = floor(uv.x*vScreenSize.x/fMosaicScal.x)/(vScreenSize.x/fMosaicScal.x);
+      uv.y = floor(uv.y*vScreenSize.y/fMosaicScal.y)/(vScreenSize.y/fMosaicScal.y);
+      float t = u_time*0.06+random(uv.x)*0.4;
+      float lineWidth = 0.0008;
+      vec3 color = vec3(0.0);
+      int loops = ${isMobile ? '3' : '5'};
+      for(int j=0;j<3;j++){
+        for(int i=0;i<5;i++){
+          color[j] += lineWidth*float(i*i)/abs(fract(t-0.01*float(j)+float(i)*0.01)*1.0-length(uv));
+        }
+      }
+      gl_FragColor = vec4(color[2],color[1],color[0],1.0);
+    }
+  `;
+
+  function compileShader(type,src){
+    const s = gl.createShader(type);
+    gl.shaderSource(s,src); gl.compileShader(s);
+    return s;
+  }
+  const prog = gl.createProgram();
+  gl.attachShader(prog, compileShader(gl.VERTEX_SHADER, vsrc));
+  gl.attachShader(prog, compileShader(gl.FRAGMENT_SHADER, fsrc));
+  gl.linkProgram(prog);
+  gl.useProgram(prog);
+
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,1,1]), gl.STATIC_DRAW);
+  const pos = gl.getAttribLocation(prog,'a_pos');
+  gl.enableVertexAttribArray(pos);
+  gl.vertexAttribPointer(pos,2,gl.FLOAT,false,0,0);
+
+  const uRes = gl.getUniformLocation(prog,'u_res');
+  const uTime = gl.getUniformLocation(prog,'u_time');
+  let t = 0;
+  let lastFrame = 0;
+  const targetFPS = isMobile ? 20 : 60;
+  const interval = 1000 / targetFPS;
+
+  function render(now){
+    if(now - lastFrame < interval){ requestAnimationFrame(render); return; }
+    lastFrame = now;
+    t += 0.05;
+    gl.uniform2f(uRes, canvas.width, canvas.height);
+    gl.uniform1f(uTime, t);
+    gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+    requestAnimationFrame(render);
+  }
+  requestAnimationFrame(render);
+})();
+
+
+// ──────────────────────────────────────
+// LANGUAGE SWITCHER
+// ──────────────────────────────────────
+function setLang(lang){
+  document.documentElement.setAttribute('data-active-lang', lang);
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`).classList.add('active');
+
+  // Handle [data-en] / [data-ru] attributes on nav links
+  document.querySelectorAll('[data-en][data-ru]').forEach(el => {
+    el.textContent = lang === 'en' ? el.getAttribute('data-en') : el.getAttribute('data-ru');
+  });
+
+  localStorage.setItem('lang', lang);
+}
+
+// Initialize language on page load
+setLang(localStorage.getItem('lang') || 'en');
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html> 

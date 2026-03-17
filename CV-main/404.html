@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>404 — Khalil Sharaf</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #080808;
+      --surface: rgba(255,255,255,0.04);
+      --border: rgba(255,255,255,0.08);
+      --text: #f0ede8;
+      --muted: rgba(240,237,232,0.45);
+      --accent: #c9a96e;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      text-align: center;
+      padding: 40px;
+    }
+    #shader-canvas {
+      position: fixed; inset: 0; z-index: 0; opacity: 0.3; pointer-events: none;
+    }
+    .content {
+      position: relative; z-index: 1;
+    }
+    .err-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(120px, 20vw, 220px);
+      font-weight: 300;
+      line-height: 0.9;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(201,169,110,0.4);
+      margin-bottom: 24px;
+      animation: fadeUp 0.6s ease both;
+    }
+    .err-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(28px, 4vw, 48px);
+      font-weight: 300;
+      margin-bottom: 16px;
+      animation: fadeUp 0.6s 0.1s ease both;
+    }
+    .err-title em { font-style: italic; color: var(--accent); }
+    .err-sub {
+      font-size: 14px; color: var(--muted);
+      max-width: 400px; margin: 0 auto 40px;
+      line-height: 1.7;
+      animation: fadeUp 0.6s 0.2s ease both;
+    }
+    .err-actions {
+      display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;
+      animation: fadeUp 0.6s 0.3s ease both;
+    }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--accent); color: #080808;
+      padding: 14px 28px; border-radius: 100px;
+      font-size: 13px; font-weight: 500; letter-spacing: 0.05em;
+      text-decoration: none; transition: all 0.25s;
+    }
+    .btn-primary:hover { background: #d4b47e; transform: translateY(-1px); }
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 8px;
+      border: 1px solid var(--border); color: var(--muted);
+      padding: 14px 28px; border-radius: 100px;
+      font-size: 13px; letter-spacing: 0.05em;
+      text-decoration: none; transition: all 0.25s;
+    }
+    .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* floating particles */
+    .particle {
+      position: fixed;
+      border-radius: 50%;
+      background: rgba(201,169,110,0.15);
+      pointer-events: none;
+      animation: float linear infinite;
+    }
+    @keyframes float {
+      0% { transform: translateY(100vh) scale(0); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(-100px) scale(1); opacity: 0; }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .lang-toggle {
+      position: fixed; top: 20px; right: 20px; z-index: 10;
+      display: flex; gap: 6px; background: var(--surface);
+      border: 1px solid var(--border); border-radius: 20px; padding: 4px 6px;
+    }
+    .lang-btn {
+      background: none; border: none; color: var(--muted); font-size: 12px;
+      font-weight: 500; letter-spacing: 0.06em; padding: 4px 10px;
+      border-radius: 14px; cursor: pointer; transition: all 0.2s;
+      font-family: 'Inter', sans-serif;
+    }
+    .lang-btn.active { background: var(--accent); color: #080808; }
+
+    [data-lang="ru"] { display: none; }
+  </style>
+</head>
+<body>
+
+<canvas id="shader-canvas"></canvas>
+
+<div class="lang-toggle">
+  <button class="lang-btn active" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" onclick="setLang('ru')">RU</button>
+</div>
+
+<div class="content">
+  <div class="err-num">404</div>
+  <h1 class="err-title">
+    <span data-lang="en">Page <em>Not Found</em></span>
+    <span data-lang="ru">Страница <em>не найдена</em></span>
+  </h1>
+  <p class="err-sub">
+    <span data-lang="en">Looks like this page doesn't exist or has been moved. Let's get you back on track.</span>
+    <span data-lang="ru">Кажется, эта страница не существует или была перемещена. Давайте вернёмся.</span>
+  </p>
+  <div class="err-actions">
+    <a href="index.html" class="btn-primary">
+      <span data-lang="en">← Back to Home</span>
+      <span data-lang="ru">← На главную</span>
+    </a>
+    <a href="portfolio.html" class="btn-secondary">
+      <span data-lang="en">View Portfolio</span>
+      <span data-lang="ru">Портфолио</span>
+    </a>
+  </div>
+</div>
+
+<script>
+// Particles
+for(let i=0;i<12;i++){
+  const p=document.createElement('div');
+  p.className='particle';
+  const size=Math.random()*6+3;
+  p.style.cssText=`width:${size}px;height:${size}px;left:${Math.random()*100}vw;animation-duration:${Math.random()*8+6}s;animation-delay:${Math.random()*6}s;`;
+  document.body.appendChild(p);
+}
+
+// Shader
+(function(){
+  const canvas=document.getElementById('shader-canvas');
+  const gl=canvas.getContext('webgl');
+  if(!gl)return;
+  function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;gl.viewport(0,0,canvas.width,canvas.height);}
+  resize();window.addEventListener('resize',resize);
+  const vs=`attribute vec2 a_pos;void main(){gl_Position=vec4(a_pos,0,1);}`;
+  const fs=`precision highp float;uniform vec2 u_res;uniform float u_time;float random(in float x){return fract(sin(x)*1e4);}float random(in vec2 st){return fract(sin(dot(st.xy,vec2(12.9898,78.233)))*43758.5453123);}void main(){vec2 uv=(gl_FragCoord.xy*2.0-u_res.xy)/min(u_res.x,u_res.y);vec2 s=vec2(4.0,2.0);vec2 v=vec2(256.0,256.0);uv.x=floor(uv.x*v.x/s.x)/(v.x/s.x);uv.y=floor(uv.y*v.y/s.y)/(v.y/s.y);float t=u_time*0.06+random(uv.x)*0.4;float lw=0.0008;vec3 c=vec3(0.0);for(int j=0;j<3;j++){for(int i=0;i<5;i++){c[j]+=lw*float(i*i)/abs(fract(t-0.01*float(j)+float(i)*0.01)*1.0-length(uv));}}gl_FragColor=vec4(c[2],c[1],c[0],1.0);}`;
+  function sh(t,s){const x=gl.createShader(t);gl.shaderSource(x,s);gl.compileShader(x);return x;}
+  const p=gl.createProgram();gl.attachShader(p,sh(gl.VERTEX_SHADER,vs));gl.attachShader(p,sh(gl.FRAGMENT_SHADER,fs));gl.linkProgram(p);gl.useProgram(p);
+  const b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+  const pos=gl.getAttribLocation(p,'a_pos');gl.enableVertexAttribArray(pos);gl.vertexAttribPointer(pos,2,gl.FLOAT,false,0,0);
+  const uR=gl.getUniformLocation(p,'u_res'),uT=gl.getUniformLocation(p,'u_time');
+  let t=0;
+  function render(){requestAnimationFrame(render);t+=0.05;gl.uniform2f(uR,canvas.width,canvas.height);gl.uniform1f(uT,t);gl.drawArrays(gl.TRIANGLE_STRIP,0,4);}
+  render();
+})();
+
+// Lang
+function setLang(lang){
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`).classList.add('active');
+  document.querySelectorAll('[data-lang]').forEach(el=>{
+    el.style.display=el.getAttribute('data-lang')===lang?'':'none';
+  });
+  localStorage.setItem('lang',lang);
+}
+setLang(localStorage.getItem('lang')||'en');
+</script>
+</body>
+</html>
